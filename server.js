@@ -2,11 +2,10 @@ const express = require('express');
 const app = express();
 const { v4: uuidv4 } = require('uuid');
 const port = 3000;
-const http = require("http");
 
-const server = http.createServer(app);
-const { Server } = require("socket.io");
-const io = new Server(server);
+const server = require('http').Server(app);
+
+const io = require('socket.io')(server);
 
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
