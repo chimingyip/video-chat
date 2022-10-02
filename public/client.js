@@ -1,9 +1,8 @@
-const socket = io('/', {
-    transports: ['websocket', 'polling'],
-    path: "./"
-});
+// const socket = io('/', {
+//     transports: ['polling', 'websocket'],
+// });
 
-// const socket = io('/');
+const socket = io('/');
 
 let myVideoStream;
 const videoGrid = document.getElementById("video-grid");

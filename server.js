@@ -40,9 +40,7 @@ io.on('connection', (socket) => {
   // socket.on("custom-event", (number, string, obj) => {
   //   console.log(number, string, obj);
   // });
-
-  // userId = uuidv4();
-  // console.log(userId);
+  console.log("new connection")
   socket.on('join-room', (roomId, userId) => {
     console.log('joined room');
     console.log("room id: " + roomId);
@@ -50,6 +48,5 @@ io.on('connection', (socket) => {
     socket.join(roomId);
     socket.broadcast.to(roomId).emit('user-connected', userId);
   });
-  // socket.emit("hello", userId);
   console.log('A user has connected.');
 });
