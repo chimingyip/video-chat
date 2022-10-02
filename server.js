@@ -37,9 +37,6 @@ app.get('/:chatroom', (req, res) => {
 });
 
 io.on('connection', (socket) => {
-  // socket.on("custom-event", (number, string, obj) => {
-  //   console.log(number, string, obj);
-  // });
   console.log("new connection")
   socket.on('join-room', (roomId, userId) => {
     console.log('joined room');
