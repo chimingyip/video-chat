@@ -20,6 +20,8 @@ const peerServer = ExpressPeerServer(server, {
   port: 443
 });
 
+let userNo = 1;
+
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
 app.use('/peerjs', peerServer);
@@ -37,13 +39,10 @@ app.get('/:chatroom', (req, res) => {
 });
 
 io.on('connection', (socket) => {
-  console.log("new connection")
   socket.on('join-room', (roomId, userId) => {
-    console.log('joined room');
-    console.log("room id: " + roomId);
-    console.log("user id: " + userId);
     socket.join(roomId);
     socket.broadcast.to(roomId).emit('user-connected', userId);
   });
-  console.log('A user has connected.');
+  console.log(`User ${userNo} has connected.`);
+  userNo++;
 });

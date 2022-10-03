@@ -11,15 +11,22 @@ const peer = new Peer(undefined, {
     port: '3000',
 });
 
-socket.emit("custom-event", 105, "Hi", { a: "a"});
+peer.on('open', (id) => {
+    console.log("id "+ id);
+    console.log("room id "+ ROOM_ID);
+    console.log("peer connection open");
+    socket.emit('join-room', ROOM_ID, id);
+});
 
-navigator.mediaDevices.getUserMedia({
+var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+
+getUserMedia({
     audio: true,
     video: true,
-})
-.then((stream) => {
+}, (stream) => {
     myVideoStream = stream;
     addVideoStream(myVideo, stream);
+
     peer.on('call', (call) => {
         call.answer(stream);
         const video = document.createElement('video');
@@ -27,10 +34,13 @@ navigator.mediaDevices.getUserMedia({
             addVideoStream(video, userVideoStream);
         });
     });
+
     socket.on('user-connected', (userId) => {
         console.log('another user connected');
         connectToNewUser(userId, stream);
     });
+}, (err) => {
+    console.log('Failed to get local stream', err);
 });
 
 const connectToNewUser = (userId, stream) => {
@@ -40,13 +50,6 @@ const connectToNewUser = (userId, stream) => {
         addVideoStream(video, userVideoStream);
     });
 };
-
-peer.on('open', (id) => {
-    console.log("id "+ id);
-    console.log("room id "+ ROOM_ID);
-    console.log("peer connection open");
-    socket.emit('join-room', ROOM_ID, id);
-});
 
 const addVideoStream = (video, stream) => {
     console.log("video obj " + stream);
